@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 
 import { ProductService } from "./product.service";
 import { EMPTY, Subject, combineLatest } from "rxjs";
-import { catchError, map } from "rxjs/operators";
+import { catchError, map, startWith } from "rxjs/operators";
 import { ProductCategoryService } from "../product-categories/product-category.service";
 
 @Component({
@@ -18,7 +18,7 @@ export class ProductListComponent {
 
   products$ = combineLatest([
     this.productService.productsWithCategory$,
-    this.categorySelectedAction$
+    this.categorySelectedAction$.pipe(startWith(0))
   ]).pipe(
     map(([products, selectedCategoryId]) =>
       products.filter(product =>
